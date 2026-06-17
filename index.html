@@ -51,42 +51,62 @@
             min-height: 20px;
         }
 
-        /* --- COOKIE DISK PLAYER --- */
-        #cookie-container {
-            width: 120px;
+        /* --- COOKIE WRAPPER --- */
+        #cookie-wrapper {
+            width: 140px;
             height: 120px;
             margin: 0 auto 30px auto;
             position: relative;
             cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             user-select: none;
         }
 
-        #cookie-emoji {
-            font-size: 90px;
-            line-height: 1;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
-        }
-
-        /* Idle Floating Bouncing Movement */
+        /* Continuous gentle floating movement */
         .wobble {
             animation: floatWobble 2.5s ease-in-out infinite;
         }
 
         @keyframes floatWobble {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-8px) scale(1.03); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
         }
 
-        /* Exploding/Cracking Break Effect */
-        .cookie-break {
-            transform: scale(1.4) rotate(15deg);
+        /* Base halves using clip-path to slice the emoji perfectly down the center line */
+        .cookie-half {
+            position: absolute;
+            top: 0;
+            width: 140px;
+            height: 120px;
+            font-size: 90px;
+            line-height: 120px;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s;
+        }
+
+        #left-half {
+            left: 0;
+            clip-path: inset(0 50% 0 0); /* Shows only left 50% */
+            transform-origin: 25% 50%;
+        }
+
+        #right-half {
+            left: 0;
+            clip-path: inset(0 0 0 50%); /* Shows only right 50% */
+            transform-origin: 75% 50%;
+        }
+
+        /* Splitting Action Breaks */
+        .split-left {
+            transform: translateX(-55px) rotate(-25deg);
             opacity: 0;
         }
 
-        /* --- THE REALISTIC PAPERS SLIP --- */
+        .split-right {
+            transform: translateX(55px) rotate(25deg);
+            opacity: 0;
+        }
+
+        /* --- THE DYNAMIC FORTUNE SLIP --- */
         #paper-fortune {
             width: 90%;
             background: #ffffff;
@@ -117,7 +137,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* --- SYSTEM TRIGGER ACTION BUTTON --- */
+        /* --- RESTART ACTION BUTTON --- */
         #reset-btn {
             background-color: var(--text-main);
             color: white;
@@ -142,10 +162,13 @@
     <h2>Lucky Cookie</h2>
     <div id="instruction">Tap the cookie to crack it open...</div>
 
-    <div id="cookie-container" onclick="crackCookie()">
-        <div id="cookie-emoji" class="wobble">🥠</div>
+    <!-- Wrapper hosting split twin components -->
+    <div id="cookie-wrapper" class="wobble" onclick="crackCookie()">
+        <div class="cookie-half" id="left-half">🥠</div>
+        <div class="cookie-half" id="right-half">🥠</div>
     </div>
 
+    <!-- Paper Fortune Container -->
     <div id="paper-fortune">
         <div id="fortune-text"></div>
         <div class="fortune-subtext">Lucky Numbers: 7, 11, 22, 44</div>
@@ -161,18 +184,20 @@
         if (isCracked) return;
         isCracked = true;
 
-        const cookie = document.getElementById('cookie-emoji');
+        const wrapper = document.getElementById('cookie-wrapper');
+        const leftHalf = document.getElementById('left-half');
+        const rightHalf = document.getElementById('right-half');
         const paper = document.getElementById('paper-fortune');
         const instruction = document.getElementById('instruction');
         const resetBtn = document.getElementById('reset-btn');
 
-        // Pop open animation styling
-        cookie.classList.remove('wobble');
-        cookie.classList.add('cookie-break');
+        // Stop floating, activate physical split
+        wrapper.classList.remove('wobble');
+        leftHalf.classList.add('split-left');
+        rightHalf.classList.add('split-right');
         instruction.innerText = "Your morning fortune:";
 
         setTimeout(() => {
-            // Your custom dynamic text pool
             const fortunes = [
                 "I love you Monkey 💗 ",
                 "Have an amazing day today! I love youuu!",
@@ -183,8 +208,8 @@
             const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
             document.getElementById('fortune-text').innerText = randomFortune;
 
-            // Slide out paper slip seamlessly
-            document.getElementById('cookie-container').style.display = 'none';
+            // Swap displays cleanly
+            wrapper.style.display = 'none';
             paper.style.display = 'block';
             
             setTimeout(() => {
@@ -192,7 +217,6 @@
                 paper.style.transform = 'translateY(0) scale(1)';
             }, 50);
 
-            // Transition control for restart panel
             setTimeout(() => {
                 resetBtn.style.display = 'block';
                 setTimeout(() => { resetBtn.style.opacity = '1'; }, 50);
@@ -204,7 +228,9 @@
     function resetCookie() {
         isCracked = false;
         
-        const cookie = document.getElementById('cookie-emoji');
+        const wrapper = document.getElementById('cookie-wrapper');
+        const leftHalf = document.getElementById('left-half');
+        const rightHalf = document.getElementById('right-half');
         const paper = document.getElementById('paper-fortune');
         const instruction = document.getElementById('instruction');
         const resetBtn = document.getElementById('reset-btn');
@@ -217,13 +243,14 @@
             paper.style.display = 'none';
             resetBtn.style.display = 'none';
             
-            // Bring cookie container layout structure back up
-            document.getElementById('cookie-container').style.display = 'flex';
-            cookie.classList.remove('cookie-break');
+            // Restore structural visibility safely
+            wrapper.style.display = 'block';
+            leftHalf.classList.remove('split-left');
+            rightHalf.classList.remove('split-right');
             instruction.innerText = "Tap the cookie to crack it open...";
             
-            // Re-engage floating loop
-            cookie.classList.add('wobble');
+            // Re-engage flight parameters
+            wrapper.classList.add('wobble');
         }, 300);
     }
 </script>
