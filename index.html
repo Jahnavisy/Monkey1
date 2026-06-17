@@ -51,10 +51,10 @@
             min-height: 20px;
         }
 
-        /* --- COOKIE WRAPPER & ANIMATION --- */
+        /* --- COOKIE CONTAINER --- */
         #cookie-wrapper {
-            width: 160px;
-            height: 140px;
+            width: 170px;
+            height: 130px;
             margin: 0 auto 30px auto;
             position: relative;
             cursor: pointer;
@@ -65,8 +65,8 @@
         }
 
         .cookie-half {
-            width: 80px;
-            height: 140px;
+            width: 85px;
+            height: 130px;
             position: absolute;
             top: 0;
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s;
@@ -82,27 +82,27 @@
             transform-origin: right center;
         }
 
-        /* Idle Floating Movement */
+        /* Gentle Floating Animation */
         .wobble {
             animation: floatWobble 2.5s ease-in-out infinite;
         }
 
         @keyframes floatWobble {
             0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-6px) rotate(2deg); }
+            50% { transform: translateY(-5px) rotate(1.5deg); }
         }
 
-        /* Crack Effects */
+        /* Flipped & Angled Break Transitions */
         .crack-left {
-            transform: translateX(-50px) rotate(-30deg) scale(0.9);
-            opacity: 0.3;
+            transform: translateX(-60px) rotate(-35deg) scale(0.85);
+            opacity: 0.25;
         }
         .crack-right {
-            transform: translateX(50px) rotate(30deg) scale(0.9);
-            opacity: 0.3;
+            transform: translateX(60px) rotate(35deg) scale(0.85);
+            opacity: 0.25;
         }
 
-        /* --- THE SLIDEOUT FORTUNE SLIP --- */
+        /* --- THE PAPERS SLIP --- */
         #paper-fortune {
             width: 85%;
             background: #ffffff;
@@ -133,7 +133,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* --- RESET ACTION BUTTON --- */
+        /* --- RESET BUTTON --- */
         #reset-btn {
             background-color: var(--text-main);
             color: white;
@@ -161,18 +161,19 @@
     <div id="cookie-wrapper" class="wobble" onclick="crackCookie()">
         
         <div class="cookie-half" id="left">
-            <svg viewBox="0 0 80 140" width="100%" height="100%">
-                <path d="M80,10 C45,10 5,35 5,75 C5,105 40,135 80,130 C65,105 50,85 80,75 Z" fill="#f3cc7a"/>
-                <path d="M80,75 C50,85 65,105 80,130 C75,115 78,95 80,75 Z" fill="#deab49" opacity="0.4"/>
-                <path d="M80,10 C55,10 25,25 20,45 C35,35 60,25 80,25 Z" fill="#fff" opacity="0.25"/>
+            <svg viewBox="0 0 85 130" width="100%" height="100%">
+                <path d="M85,15 C50,12 15,25 8,65 C2,100 20,125 45,122 C40,100 45,75 85,60 Z" fill="#f4ce80"/>
+                <path d="M85,60 C45,75 40,100 45,122 C30,115 18,95 20,70 C22,55 50,62 85,60 Z" fill="#ddac4f" opacity="0.45"/>
+                <path d="M85,15 C55,12 25,24 15,45 C28,35 55,25 85,25 Z" fill="#fff" opacity="0.25"/>
+                <line x1="84" y1="15" x2="84" y2="60" stroke="#d5a03b" stroke-width="1.5" opacity="0.6"/>
             </svg>
         </div>
         
         <div class="cookie-half" id="right">
-            <svg viewBox="0 0 80 140" width="100%" height="100%">
-                <path d="M0,10 C35,10 75,35 75,75 C75,105 40,135 0,130 C15,105 30,85 0,75 Z" fill="#e8be67"/>
-                <path d="M0,75 C30,85 15,105 0,130 C5,115 2,95 0,75 Z" fill="#cb9732" opacity="0.5"/>
-                <path d="M0,10 C25,10 55,25 60,45 C45,35 20,25 0,25 Z" fill="#fff" opacity="0.18"/>
+            <svg viewBox="0 0 85 130" width="100%" height="100%">
+                <path d="M0,15 C35,12 70,25 77,65 C83,100 65,125 40,122 C45,100 40,75 0,60 Z" fill="#e9bf6a"/>
+                <path d="M0,60 C40,75 45,100 40,122 C55,115 67,95 65,70 C63,55 35,62 0,60 Z" fill="#ca9631" opacity="0.55"/>
+                <path d="M0,15 C30,12 60,24 70,45 C57,35 30,25 0,25 Z" fill="#fff" opacity="0.18"/>
             </svg>
         </div>
         
@@ -186,7 +187,7 @@
     <button id="reset-btn" onclick="resetCookie()">Get Another Cookie</button>
 </div>
 
-<script>
+<script {RULE_1}>
     let isCracked = false;
 
     function crackCookie() {
