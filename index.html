@@ -71,9 +71,10 @@
             50% { transform: translateY(-6px); }
         }
 
-        /* Base halves using clip-path to slice the emoji perfectly down the center line */
+        /* Base halves using clip-path to slice the emoji horizontally */
         .cookie-half {
             position: absolute;
+            left: 0;
             top: 0;
             width: 140px;
             height: 120px;
@@ -83,30 +84,28 @@
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s;
         }
 
-        #left-half {
-            left: 0;
-            clip-path: inset(0 50% 0 0); /* Shows only left 50% */
-            transform-origin: 25% 50%;
+        #top-half {
+            clip-path: inset(0 0 50% 0); /* Shows only top 50% */
+            transform-origin: center 25%;
         }
 
-        #right-half {
-            left: 0;
-            clip-path: inset(0 0 0 50%); /* Shows only right 50% */
-            transform-origin: 75% 50%;
+        #bottom-half {
+            clip-path: inset(50% 0 0 0); /* Shows only bottom 50% */
+            transform-origin: center 75%;
         }
 
-        /* Splitting Action Breaks */
-        .split-left {
-            transform: translateX(-55px) rotate(-25deg);
+        /* Horizontal Splitting Action */
+        .split-top {
+            transform: translateY(-50px) rotate(-10deg);
             opacity: 0;
         }
 
-        .split-right {
-            transform: translateX(55px) rotate(25deg);
+        .split-bottom {
+            transform: translateY(50px) rotate(10deg);
             opacity: 0;
         }
 
-        /* --- THE DYNAMIC FORTUNE SLIP --- */
+        /* --- THE FORTUNE SLIP --- */
         #paper-fortune {
             width: 90%;
             background: #ffffff;
@@ -164,8 +163,8 @@
 
     <!-- Wrapper hosting split twin components -->
     <div id="cookie-wrapper" class="wobble" onclick="crackCookie()">
-        <div class="cookie-half" id="left-half">🥠</div>
-        <div class="cookie-half" id="right-half">🥠</div>
+        <div class="cookie-half" id="top-half">🥠</div>
+        <div class="cookie-half" id="bottom-half">🥠</div>
     </div>
 
     <!-- Paper Fortune Container -->
@@ -185,16 +184,16 @@
         isCracked = true;
 
         const wrapper = document.getElementById('cookie-wrapper');
-        const leftHalf = document.getElementById('left-half');
-        const rightHalf = document.getElementById('right-half');
+        const topHalf = document.getElementById('top-half');
+        const bottomHalf = document.getElementById('bottom-half');
         const paper = document.getElementById('paper-fortune');
         const instruction = document.getElementById('instruction');
         const resetBtn = document.getElementById('reset-btn');
 
         // Stop floating, activate physical split
         wrapper.classList.remove('wobble');
-        leftHalf.classList.add('split-left');
-        rightHalf.classList.add('split-right');
+        topHalf.classList.add('split-top');
+        bottomHalf.classList.add('split-bottom');
         instruction.innerText = "Your morning fortune:";
 
         setTimeout(() => {
@@ -229,8 +228,8 @@
         isCracked = false;
         
         const wrapper = document.getElementById('cookie-wrapper');
-        const leftHalf = document.getElementById('left-half');
-        const rightHalf = document.getElementById('right-half');
+        const topHalf = document.getElementById('top-half');
+        const bottomHalf = document.getElementById('bottom-half');
         const paper = document.getElementById('paper-fortune');
         const instruction = document.getElementById('instruction');
         const resetBtn = document.getElementById('reset-btn');
@@ -245,8 +244,8 @@
             
             // Restore structural visibility safely
             wrapper.style.display = 'block';
-            leftHalf.classList.remove('split-left');
-            rightHalf.classList.remove('split-right');
+            topHalf.classList.remove('split-top');
+            bottomHalf.classList.remove('split-bottom');
             instruction.innerText = "Tap the cookie to crack it open...";
             
             // Re-engage flight parameters
