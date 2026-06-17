@@ -155,24 +155,24 @@
 <body>
 
 <div id="game-card">
-    <h2>Lucky Cookie </h2>
+    <h2>Lucky Cookie</h2>
     <div id="instruction">Tap the cookie to crack it open...</div>
 
     <div id="cookie-wrapper" class="wobble" onclick="crackCookie()">
         
         <div class="cookie-half" id="left">
             <svg viewBox="0 0 80 140" width="100%" height="100%">
-                <path d="M80,15 C45,15 10,40 10,80 C10,115 35,130 65,125 C60,110 55,85 80,75 Z" fill="#f3cc7a"/>
-                <path d="M80,75 C55,85 60,110 65,125 C72,123 77,118 80,110 Z" fill="#deab49" opacity="0.4"/>
-                <path d="M80,15 C65,15 50,25 45,40 C55,35 70,25 80,25 Z" fill="#fff" opacity="0.2"/>
+                <path d="M80,10 C45,10 5,35 5,75 C5,105 40,135 80,130 C65,105 50,85 80,75 Z" fill="#f3cc7a"/>
+                <path d="M80,75 C50,85 65,105 80,130 C75,115 78,95 80,75 Z" fill="#deab49" opacity="0.4"/>
+                <path d="M80,10 C55,10 25,25 20,45 C35,35 60,25 80,25 Z" fill="#fff" opacity="0.25"/>
             </svg>
         </div>
         
         <div class="cookie-half" id="right">
             <svg viewBox="0 0 80 140" width="100%" height="100%">
-                <path d="M0,15 C35,15 70,40 70,80 C70,115 45,130 15,125 C20,110 25,85 0,75 Z" fill="#e8be67"/>
-                <path d="M0,75 C25,85 20,110 15,125 C8,123 3,118 0,110 Z" fill="#cb9732" opacity="0.5"/>
-                <path d="M0,15 C15,15 30,25 35,40 C25,35 10,25 0,25 Z" fill="#fff" opacity="0.15"/>
+                <path d="M0,10 C35,10 75,35 75,75 C75,105 40,135 0,130 C15,105 30,85 0,75 Z" fill="#e8be67"/>
+                <path d="M0,75 C30,85 15,105 0,130 C5,115 2,95 0,75 Z" fill="#cb9732" opacity="0.5"/>
+                <path d="M0,10 C25,10 55,25 60,45 C45,35 20,25 0,25 Z" fill="#fff" opacity="0.18"/>
             </svg>
         </div>
         
@@ -206,7 +206,6 @@
         instruction.innerText = "Your morning fortune:";
 
         setTimeout(() => {
-            // Pool of un-corny, text-style fortunes
             const fortunes = [
                 "I love you Monkey 💗 ",
                 "Have an amazing day today! I love youuu!",
@@ -223,7 +222,6 @@
                 paper.style.transform = 'translateY(0) scale(1)';
             }, 50);
 
-            // Animate the button coming into view nicely
             setTimeout(() => {
                 resetBtn.style.display = 'block';
                 setTimeout(() => { resetBtn.style.opacity = '1'; }, 50);
@@ -242,7 +240,6 @@
         const instruction = document.getElementById('instruction');
         const resetBtn = document.getElementById('reset-btn');
 
-        // Hide elements smoothly
         paper.style.opacity = '0';
         paper.style.transform = 'translateY(-30px) scale(0.9)';
         resetBtn.style.opacity = '0';
@@ -251,7 +248,6 @@
             paper.style.display = 'none';
             resetBtn.style.display = 'none';
             
-            // Re-join the cookie halves
             leftSide.classList.remove('crack-left');
             rightSide.classList.remove('crack-right');
             instruction.innerText = "Tap the cookie to crack it open...";
