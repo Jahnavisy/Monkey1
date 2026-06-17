@@ -46,14 +46,14 @@
         #instruction {
             color: var(--text-sub);
             font-size: 14px;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
             font-weight: 500;
             min-height: 20px;
         }
 
-        /* --- COOKIE WRAPPER --- */
-        #cookie-wrapper {
-            width: 180px;
+        /* --- COOKIE DISK PLAYER --- */
+        #cookie-container {
+            width: 120px;
             height: 120px;
             margin: 0 auto 30px auto;
             position: relative;
@@ -61,61 +61,46 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 0.4s ease;
+            user-select: none;
         }
 
-        .cookie-half {
-            width: 90px;
-            height: 120px;
-            position: absolute;
-            top: 0;
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s;
+        #cookie-emoji {
+            font-size: 90px;
+            line-height: 1;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
         }
 
-        #left {
-            left: 0;
-            transform-origin: left center;
-        }
-
-        #right {
-            right: 0;
-            transform-origin: right center;
-        }
-
+        /* Idle Floating Bouncing Movement */
         .wobble {
             animation: floatWobble 2.5s ease-in-out infinite;
         }
 
         @keyframes floatWobble {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-5px) rotate(1deg); }
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.03); }
         }
 
-        /* Straight pull-apart break */
-        .crack-left {
-            transform: translateX(-65px) rotate(-15deg);
-            opacity: 0;
-        }
-        .crack-right {
-            transform: translateX(65px) rotate(15deg);
+        /* Exploding/Cracking Break Effect */
+        .cookie-break {
+            transform: scale(1.4) rotate(15deg);
             opacity: 0;
         }
 
-        /* --- FORTUNE SLIP --- */
+        /* --- THE REALISTIC PAPERS SLIP --- */
         #paper-fortune {
-            width: 85%;
+            width: 90%;
             background: #ffffff;
             border-top: 2px dashed #e74c3c;
             border-bottom: 2px dashed #e74c3c;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
-            padding: 22px 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            padding: 25px 18px;
             box-sizing: border-box;
-            margin: 10px auto 0 auto;
+            margin: 0 auto;
             display: none;
             text-align: center;
             opacity: 0;
-            transform: translateY(-20px) scale(0.95);
-            transition: all 0.5s ease-out;
+            transform: translateY(20px) scale(0.9);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         #fortune-text {
@@ -123,7 +108,7 @@
             font-weight: 700;
             line-height: 1.5;
             color: #c0392b;
-            margin: 0 0 6px 0;
+            margin: 0 0 8px 0;
         }
 
         .fortune-subtext {
@@ -132,7 +117,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* --- BUTTON --- */
+        /* --- SYSTEM TRIGGER ACTION BUTTON --- */
         #reset-btn {
             background-color: var(--text-main);
             color: white;
@@ -143,7 +128,7 @@
             border-radius: 12px;
             cursor: pointer;
             width: 100%;
-            margin-top: 25px;
+            margin-top: 30px;
             display: none;
             opacity: 0;
             transition: all 0.3s ease;
@@ -157,36 +142,8 @@
     <h2>Lucky Cookie</h2>
     <div id="instruction">Tap the cookie to crack it open...</div>
 
-    <div id="cookie-wrapper" class="wobble" onclick="crackCookie()">
-        
-        <!-- Sharp Geometric Left Half -->
-        <div class="cookie-half" id="left">
-            <svg viewBox="0 0 90 120" width="100%" height="100%">
-                <!-- Main wing panel -->
-                <polygon points="90,10 50,20 10,65 35,110 55,95 90,55" fill="#f4ce80" />
-                <!-- Bottom sharp tip highlight/crease -->
-                <polygon points="35,110 55,95 90,55 70,52 45,75" fill="#ddac4f" />
-                <!-- Top edge facet -->
-                <polygon points="90,10 50,20 65,40 90,30" fill="#fff" opacity="0.25" />
-                <!-- Center seam facet -->
-                <polygon points="90,10 90,55 70,52" fill="#e2b75f" />
-            </svg>
-        </div>
-        
-        <!-- Sharp Geometric Right Half -->
-        <div class="cookie-half" id="right">
-            <svg viewBox="0 0 90 120" width="100%" height="100%">
-                <!-- Main wing panel -->
-                <polygon points="0,10 40,20 80,65 55,110 35,95 0,55" fill="#e9bf6a" />
-                <!-- Bottom sharp tip highlight/crease -->
-                <polygon points="55,110 35,95 0,55 20,52 45,75" fill="#ca9631" />
-                <!-- Top edge facet -->
-                <polygon points="0,10 40,20 25,40 0,30" fill="#fff" opacity="0.18" />
-                <!-- Center seam facet -->
-                <polygon points="0,10 0,55 20,52" fill="#cca043" />
-            </svg>
-        </div>
-        
+    <div id="cookie-container" onclick="crackCookie()">
+        <div id="cookie-emoji" class="wobble">🥠</div>
     </div>
 
     <div id="paper-fortune">
@@ -204,19 +161,18 @@
         if (isCracked) return;
         isCracked = true;
 
-        const wrapper = document.getElementById('cookie-wrapper');
-        const leftSide = document.getElementById('left');
-        const rightSide = document.getElementById('right');
+        const cookie = document.getElementById('cookie-emoji');
         const paper = document.getElementById('paper-fortune');
         const instruction = document.getElementById('instruction');
         const resetBtn = document.getElementById('reset-btn');
 
-        wrapper.classList.remove('wobble');
-        leftSide.classList.add('crack-left');
-        rightSide.classList.add('crack-right');
+        // Pop open animation styling
+        cookie.classList.remove('wobble');
+        cookie.classList.add('cookie-break');
         instruction.innerText = "Your morning fortune:";
 
         setTimeout(() => {
+            // Your custom dynamic text pool
             const fortunes = [
                 "I love you Monkey 💗 ",
                 "Have an amazing day today! I love youuu!",
@@ -227,43 +183,47 @@
             const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
             document.getElementById('fortune-text').innerText = randomFortune;
 
+            // Slide out paper slip seamlessly
+            document.getElementById('cookie-container').style.display = 'none';
             paper.style.display = 'block';
+            
             setTimeout(() => {
                 paper.style.opacity = '1';
                 paper.style.transform = 'translateY(0) scale(1)';
             }, 50);
 
+            // Transition control for restart panel
             setTimeout(() => {
                 resetBtn.style.display = 'block';
                 setTimeout(() => { resetBtn.style.opacity = '1'; }, 50);
             }, 400);
 
-        }, 300);
+        }, 350);
     }
 
     function resetCookie() {
         isCracked = false;
         
-        const wrapper = document.getElementById('cookie-wrapper');
-        const leftSide = document.getElementById('left');
-        const rightSide = document.getElementById('right');
+        const cookie = document.getElementById('cookie-emoji');
         const paper = document.getElementById('paper-fortune');
         const instruction = document.getElementById('instruction');
         const resetBtn = document.getElementById('reset-btn');
 
         paper.style.opacity = '0';
-        paper.style.transform = 'translateY(-20px) scale(0.95)';
+        paper.style.transform = 'translateY(20px) scale(0.9)';
         resetBtn.style.opacity = '0';
         
         setTimeout(() => {
             paper.style.display = 'none';
             resetBtn.style.display = 'none';
             
-            leftSide.classList.remove('crack-left');
-            rightSide.classList.remove('crack-right');
+            // Bring cookie container layout structure back up
+            document.getElementById('cookie-container').style.display = 'flex';
+            cookie.classList.remove('cookie-break');
             instruction.innerText = "Tap the cookie to crack it open...";
             
-            wrapper.classList.add('wobble');
+            // Re-engage floating loop
+            cookie.classList.add('wobble');
         }, 300);
     }
 </script>
