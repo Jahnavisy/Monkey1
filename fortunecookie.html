@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune Cookieee</title>
+    <style>
+        :root {
+            --bg-color: #fcf8f2;
+            --card-bg: #ffffff;
+            --text-main: #33231a;
+            --text-sub: #7a685d;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #game-card {
+            background: var(--card-bg);
+            padding: 40px 25px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(138, 91, 56, 0.08);
+            width: 90%;
+            max-width: 380px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        h2 {
+            margin: 0 0 8px 0;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        #instruction {
+            color: var(--text-sub);
+            font-size: 14px;
+            margin-bottom: 40px;
+            font-weight: 500;
+            min-height: 20px;
+        }
+
+        /* --- COOKIE WRAPPER & ANIMATION --- */
+        #cookie-wrapper {
+            width: 160px;
+            height: 140px;
+            margin: 0 auto 30px auto;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+
+        .cookie-half {
+            width: 80px;
+            height: 140px;
+            position: absolute;
+            top: 0;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s;
+        }
+
+        #left {
+            left: 0;
+            transform-origin: left center;
+        }
+
+        #right {
+            right: 0;
+            transform-origin: right center;
+        }
+
+        /* Idle Floating Movement */
+        .wobble {
+            animation: floatWobble 2.5s ease-in-out infinite;
+        }
+
+        @keyframes floatWobble {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(2deg); }
+        }
+
+        /* Crack Effects */
+        .crack-left {
+            transform: translateX(-50px) rotate(-30deg) scale(0.9);
+            opacity: 0.3;
+        }
+        .crack-right {
+            transform: translateX(50px) rotate(30deg) scale(0.9);
+            opacity: 0.3;
+        }
+
+        /* --- THE SLIDEOUT FORTUNE SLIP --- */
+        #paper-fortune {
+            width: 85%;
+            background: #ffffff;
+            border-top: 2px dashed #e74c3c;
+            border-bottom: 2px dashed #e74c3c;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+            padding: 22px 15px;
+            box-sizing: border-box;
+            margin: 10px auto 0 auto;
+            display: none;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-30px) scale(0.9);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #fortune-text {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.5;
+            color: #c0392b;
+            margin: 0 0 6px 0;
+        }
+
+        .fortune-subtext {
+            font-size: 11px;
+            color: #7f8c8d;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- RESET ACTION BUTTON --- */
+        #reset-btn {
+            background-color: var(--text-main);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 25px;
+            display: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        #reset-btn:active { transform: scale(0.97); }
+    </style>
+</head>
+<body>
+
+<div id="game-card">
+    <h2>Lucky Cookie </h2>
+    <div id="instruction">Tap the cookie to crack it open...</div>
+
+    <div id="cookie-wrapper" class="wobble" onclick="crackCookie()">
+        
+        <div class="cookie-half" id="left">
+            <svg viewBox="0 0 80 140" width="100%" height="100%">
+                <path d="M80,15 C45,15 10,40 10,80 C10,115 35,130 65,125 C60,110 55,85 80,75 Z" fill="#f3cc7a"/>
+                <path d="M80,75 C55,85 60,110 65,125 C72,123 77,118 80,110 Z" fill="#deab49" opacity="0.4"/>
+                <path d="M80,15 C65,15 50,25 45,40 C55,35 70,25 80,25 Z" fill="#fff" opacity="0.2"/>
+            </svg>
+        </div>
+        
+        <div class="cookie-half" id="right">
+            <svg viewBox="0 0 80 140" width="100%" height="100%">
+                <path d="M0,15 C35,15 70,40 70,80 C70,115 45,130 15,125 C20,110 25,85 0,75 Z" fill="#e8be67"/>
+                <path d="M0,75 C25,85 20,110 15,125 C8,123 3,118 0,110 Z" fill="#cb9732" opacity="0.5"/>
+                <path d="M0,15 C15,15 30,25 35,40 C25,35 10,25 0,25 Z" fill="#fff" opacity="0.15"/>
+            </svg>
+        </div>
+        
+    </div>
+
+    <div id="paper-fortune">
+        <div id="fortune-text"></div>
+        <div class="fortune-subtext">Lucky Numbers: 7, 11, 22, 44</div>
+    </div>
+
+    <button id="reset-btn" onclick="resetCookie()">Get Another Cookie</button>
+</div>
+
+<script>
+    let isCracked = false;
+
+    function crackCookie() {
+        if (isCracked) return;
+        isCracked = true;
+
+        const wrapper = document.getElementById('cookie-wrapper');
+        const leftSide = document.getElementById('left');
+        const rightSide = document.getElementById('right');
+        const paper = document.getElementById('paper-fortune');
+        const instruction = document.getElementById('instruction');
+        const resetBtn = document.getElementById('reset-btn');
+
+        wrapper.classList.remove('wobble');
+        leftSide.classList.add('crack-left');
+        rightSide.classList.add('crack-right');
+        instruction.innerText = "Your morning fortune:";
+
+        setTimeout(() => {
+            // Pool of un-corny, text-style fortunes
+            const fortunes = [
+                "I love you Monkey 💗 ",
+                "Have an amazing day today! I love youuu!",
+                "Roses are red, violets are blue, you have to look at a laptop all day, but at least you're super cute 😉",
+                "You're my favoritest person in the whole world. Have an amazing day bubbas!"
+            ];
+            
+            const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+            document.getElementById('fortune-text').innerText = randomFortune;
+
+            paper.style.display = 'block';
+            setTimeout(() => {
+                paper.style.opacity = '1';
+                paper.style.transform = 'translateY(0) scale(1)';
+            }, 50);
+
+            // Animate the button coming into view nicely
+            setTimeout(() => {
+                resetBtn.style.display = 'block';
+                setTimeout(() => { resetBtn.style.opacity = '1'; }, 50);
+            }, 400);
+
+        }, 350);
+    }
+
+    function resetCookie() {
+        isCracked = false;
+        
+        const wrapper = document.getElementById('cookie-wrapper');
+        const leftSide = document.getElementById('left');
+        const rightSide = document.getElementById('right');
+        const paper = document.getElementById('paper-fortune');
+        const instruction = document.getElementById('instruction');
+        const resetBtn = document.getElementById('reset-btn');
+
+        // Hide elements smoothly
+        paper.style.opacity = '0';
+        paper.style.transform = 'translateY(-30px) scale(0.9)';
+        resetBtn.style.opacity = '0';
+        
+        setTimeout(() => {
+            paper.style.display = 'none';
+            resetBtn.style.display = 'none';
+            
+            // Re-join the cookie halves
+            leftSide.classList.remove('crack-left');
+            rightSide.classList.remove('crack-right');
+            instruction.innerText = "Tap the cookie to crack it open...";
+            
+            wrapper.classList.add('wobble');
+        }, 300);
+    }
+</script>
+
+</body>
+</html>
